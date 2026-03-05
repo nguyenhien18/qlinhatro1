@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chỉ số điện/nước</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <h2>QUẢN LÝ NHÀ TRỌ</h2>
+    <div class="user">Xin chào, nguoithue1</div>
+
+    <ul class="menu">
+      <li><a href="trangcanhan.html">Trang cá nhân</a></li>
+      <li><a href="tranghopdong.html">Hợp đồng</a></li>
+      <li><a href="tranghoadon.html">Hóa đơn</a></li>
+      <li class="active"><a href="trangchisodien.html">Chỉ số</a></li>
+      <li><a href="trangthanhtoan.html">Thanh toán</a></li>
+    </ul>
+
+    <div class="logout" id="logoutBtn">Đăng xuất</div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div class="page-header">
+      <div>
+        <h1>Chỉ số điện/nước</h1>
+        
+      </div>
+      <div class="subtext" style="font-weight:800;">Phòng: <b>Phòng 1</b></div>
+    </div>
+
+    <!-- FILTER BAR -->
+    <div class="filter-bar">
+      <div class="filter-item">
+        <label>Loại</label>
+        <select id="typeSelect">
+          <option value="ALL">Tất cả</option>
+          <option value="DIEN">Điện</option>
+          <option value="NUOC">Nước</option>
+        </select>
+      </div>
+
+      <div class="filter-item">
+        <label>Kỳ (YYYY-MM)</label>
+      <input
+        id="periodInput"
+        type="text"
+          placeholder="nhập kì"
+          inputmode="numeric"
+          />
+      </div>
+
+      <div class="filter-item filter-actions">
+        <label>&nbsp;</label>
+        <button id="resetBtn" class="btn btn-outline" type="button">Đặt lại</button>
+      </div>
+    </div>
+
+    <!-- METER GRID -->
+    <div class="meter-grid">
+
+      <!-- ĐIỆN -->
+      <div class="meter-card meter-item" data-type="DIEN" data-period="2025-06">
+        <div class="meter-head">
+          <div>
+            <div class="meter-title">Chỉ số Điện</div>
+            <div class="meter-sub">Kỳ: <b class="m-period">2025-06</b> </div>
+          </div>
+          <span class="tag tag-electric">Điện</span>
+        </div>
+
+        <div class="meter-info">
+          <div class="meter-row"><span class="k">Chỉ số cũ</span><span class="v">1</span></div>
+          <div class="meter-row"><span class="k">Chỉ số mới</span><span class="v">65</span></div>
+          <div class="meter-row"><span class="k">Lượng tiêu thụ</span><span class="v">64 kWh</span></div>
+          <div class="meter-row"><span class="k">Đơn giá</span><span class="v">1.831 đ/kWh</span></div>
+
+          <div class="meter-total">
+            <span>Thành tiền</span>
+            <span>114.034 đ</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- NƯỚC -->
+      <div class="meter-card meter-item" data-type="NUOC" data-period="2025-06">
+        <div class="meter-head">
+          <div>
+            <div class="meter-title">Chỉ số Nước</div>
+            <div class="meter-sub">Kỳ: <b class="m-period">2025-06</b></div>
+          </div>
+          <span class="tag tag-water">Nước</span>
+        </div>
+
+        <div class="meter-info">
+          <div class="meter-row"><span class="k">Chỉ số cũ</span><span class="v">10</span></div>
+          <div class="meter-row"><span class="k">Chỉ số mới</span><span class="v">18</span></div>
+          <div class="meter-row"><span class="k">Lượng tiêu thụ</span><span class="v">8 m³</span></div>
+          <div class="meter-row"><span class="k">Đơn giá</span><span class="v">15.000 đ/m³</span></div>
+
+          <div class="meter-total">
+            <span>Thành tiền</span>
+            <span>120.000 đ</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- EMPTY STATE (nếu lọc ra không có) -->
+      <div id="emptyState" class="empty-state" style="display:none;">
+        Không có dữ liệu phù hợp bộ lọc.
+      </div>
+
+    </div>
+  </main>
+
+</div>
+
+<script>
+  const typeSelect  = document.getElementById('typeSelect');
+  const periodInput = document.getElementById('periodInput');
+  const resetBtn    = document.getElementById('resetBtn');
+
+  const meterItems  = Array.from(document.querySelectorAll('.meter-item'));
+  const emptyState  = document.getElementById('emptyState');
+
+  function normalizePeriod(p){
+    p = (p || '').trim();
+    // chấp nhận: 2025-6 hoặc 2025-06
+    const m = p.match(/^(\d{4})-(\d{1,2})$/);
+    if(!m) return p; // giữ nguyên để người dùng tự sửa
+    const yyyy = m[1];
+    const mm = String(Number(m[2])).padStart(2,'0');
+    return `${yyyy}-${mm}`;
+  }
+
+  function applyFilter() {
+    const t = typeSelect.value;
+    const p = normalizePeriod(periodInput.value);
+
+    let shown = 0;
+
+    meterItems.forEach(card => {
+      const cardType   = card.getAttribute('data-type');
+      const cardPeriod = card.getAttribute('data-period');
+
+      const okType   = (t === 'ALL') || (cardType === t);
+      const okPeriod = (!p) || (cardPeriod === p);
+
+      const ok = okType && okPeriod;
+
+      card.style.display = ok ? '' : 'none';
+      if (ok) shown++;
+    });
+
+    emptyState.style.display = (shown === 0) ? '' : 'none';
+  }
+
+  typeSelect.addEventListener('change', applyFilter);
+  periodInput.addEventListener('input', applyFilter);
+
+  resetBtn.addEventListener('click', () => {
+    typeSelect.value = 'ALL';
+    periodInput.value = '';
+    applyFilter();
+  });
+
+  applyFilter();
+</script>
+<script src="js/auth.js"></script>
+</body>
+</html>

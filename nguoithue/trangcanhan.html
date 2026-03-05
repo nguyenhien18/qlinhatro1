@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Thông tin cá nhân</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app">
+
+  <aside class="sidebar">
+    <h2>QUẢN LÝ NHÀ TRỌ</h2>
+    <div class="user">Xin chào, <span id="helloUser"></span></div>
+
+    <ul class="menu">
+      <li class="active"><a href="trangcanhan.html">Trang cá nhân</a></li>
+      <li><a href="tranghopdong.html">Hợp đồng</a></li>
+      <li><a href="tranghoadon.html">Hóa đơn</a></li>
+      <li><a href="trangchisodien.html">Chỉ số</a></li>
+      <li><a href="trangthanhtoan.html">Thanh toán</a></li>
+    </ul>
+
+    <div class="logout" id="logoutBtn">Đăng xuất</div>
+  </aside>
+
+  <main class="main">
+    <div class="page-header">
+      <div>
+        <h1>Thông tin cá nhân</h1>
+        
+      </div>
+    </div>
+
+    <div class="card profile-panel">
+      <div class="profile-grid">
+        <!-- CỘT TRÁI -->
+        <div class="profile-col">
+          <div class="p-item">
+            <div class="p-label">Họ và tên</div>
+            <div class="p-value">Nguyễn Văn A</div>
+          </div>
+
+          <div class="p-item">
+            <div class="p-label">Email</div>
+            <div class="p-value">nguoithue1@gmail.com</div>
+          </div>
+
+          <div class="p-item">
+            <div class="p-label">Số điện thoại</div>
+            <div class="p-value">0123456789</div>
+          </div>
+
+          <div class="p-item">
+            <div class="p-label">CCCD/CMND</div>
+            <div class="p-value">012345678901</div>
+          </div>
+
+          <div class="p-item">
+            <div class="p-label">Địa chỉ</div>
+            <div class="p-value">Hoàn Kiếm, Hà Nội</div>
+          </div>
+
+          
+
+          
+        </div>
+
+        <!-- CỘT PHẢI -->
+        <div class="profile-col">
+          <div class="p-item">
+            <div class="p-label">Ngày sinh</div>
+            <div class="p-value">01-01-2005</div>
+          </div>
+
+          <div class="p-item">
+            <div class="p-label">Giới tính</div>
+            <div class="p-value">Nam</div>
+          </div>
+
+          
+          <div class="p-item">
+            <div class="p-label">Tên đăng nhập</div>
+            <div class="p-value">nguoithue1</div>
+          </div>
+          
+
+          <div class="p-item">
+            <div class="p-label">Phòng</div>
+            <div class="p-value">Phòng 1</div>
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  const user = localStorage.getItem("logged_in_user");
+
+  if (!user) {
+    // ✅ đúng đường dẫn về trang login
+    window.location.href = "../dangnhap/login.html";
+  } else {
+    const helloUser = document.getElementById("helloUser");
+    if (helloUser) helloUser.textContent = user;
+  }
+
+  const logoutBtn = document.getElementById("logoutBtn");
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", () => {
+      localStorage.removeItem("logged_in_user");
+      window.location.href = "../dangnhap/login.html";
+    });
+  }
+</script>
+<script src="js/auth.js"></script>
+</body>
+
+
+</html> 

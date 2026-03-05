@@ -1,0 +1,224 @@
+:root{
+  --bg:#f3f4f6;
+  --card:#ffffff;
+  --text:#111827;
+  --muted:#6b7280;
+  --border:#e5e7eb;
+  --primary:#2f80ed;
+  --shadow:0 10px 24px rgba(17,24,39,.08);
+  --radius:10px;
+}
+
+*{ box-sizing:border-box; }
+
+body{
+  margin:0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color:var(--text);
+  background:var(--bg);
+}
+
+/* ===== Layout ===== */
+.page{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+}
+
+.card{
+  width:100%;
+  max-width:360px;
+  background:var(--card);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:26px 28px;
+}
+
+/* ===== Title ===== */
+.title{
+  margin:0;
+  text-align:center;
+  font-size:30px;
+  font-weight:800;
+}
+
+.subtitle{
+  margin:8px 0 22px;
+  text-align:center;
+  color:var(--muted);
+  font-size:14px;
+}
+
+/* ===== Form ===== */
+.form-group{
+  margin-bottom:16px;
+}
+
+.form-label{
+  display:block;
+  margin-bottom:8px;
+  font-weight:700;
+  font-size:14px;
+}
+
+.input{
+  width:100%;
+  padding:12px 14px;
+  font-size:14px;
+  border:1px solid var(--border);
+  border-radius:6px;
+  outline:none;
+  background:#fff;
+}
+
+.input:focus{
+  border-color: rgba(47,128,237,.6);
+  box-shadow: 0 0 0 4px rgba(47,128,237,.12);
+}
+
+/* ===== Links rows ===== */
+.row-right{
+  display:flex;
+  justify-content:flex-end;
+  margin:6px 0 18px;
+}
+
+.row-left{
+  display:flex;
+  justify-content:flex-start;
+  margin:6px 0 18px;
+}
+
+.link{
+  color:var(--primary);
+  text-decoration:none;
+  font-weight:600;
+  font-size:14px;
+}
+.link:hover{ text-decoration:underline; }
+
+/* ===== Button ===== */
+.btn{
+  width:100%;
+  padding:12px 14px;
+  border:none;
+  border-radius:8px;
+  background:var(--primary);
+  color:#fff;
+  font-weight:800;
+  font-size:16px;
+  cursor:pointer;
+}
+
+.btn:hover{
+  filter: brightness(0.98);
+}
+
+/* ===== Helper + Message ===== */
+.help{
+  display:block;
+  margin-top:8px;
+  color:var(--muted);
+  font-size:12px;
+}
+
+.msg{
+  margin:14px 0 0;
+  padding:10px 12px;
+  border-radius:8px;
+  font-size:14px;
+  display:none;
+}
+
+.msg.ok{
+  display:block;
+  background:#ecfdf5;
+  color:#065f46;
+  border:1px solid #a7f3d0;
+}
+
+.msg.err{
+  display:block;
+  background:#fef2f2;
+  color:#991b1b;
+  border:1px solid #fecaca;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 420px){
+  .card{ padding:22px 16px; }
+}
+
+
+
+
+
+
+
+/* =========================
+   CONTRACT CARD (HỢP ĐỒNG)
+========================= */
+.contract-card{
+  max-width: 980px;
+  padding: 16px;
+}
+
+.contract-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding-bottom:12px;
+  border-bottom:1px solid var(--border);
+  margin-bottom:12px;
+}
+
+.contract-title{
+  font-size:18px;
+  font-weight:900;
+  color:var(--text);
+}
+
+/* badge trong hợp đồng: nhỏ gọn hơn 1 chút */
+.contract-badge{
+  padding:6px 12px;
+  font-size:12px;
+}
+
+.contract-body{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.c-row{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size:14px;
+}
+
+.c-ico{
+  width:22px;
+  text-align:center;
+  opacity:.9;
+}
+
+.c-k{
+  color:var(--muted);
+  font-weight:800;
+  min-width:120px;
+}
+
+.c-v{
+  font-weight:700;
+  color:var(--text);
+}
+
+.contract-actions{
+  margin-top:14px;
+  display:flex;
+  gap:10px;
+}

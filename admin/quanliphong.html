@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin - Quản lý phòng</title>
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- Modal nhỏ + kéo được -->
+  <style>
+    .modal{ position:fixed; inset:0; display:none; z-index:9999; }
+    .modal.show{ display:block; }
+    .modal-backdrop{ position:absolute; inset:0; background:rgba(0,0,0,.45); }
+    .modal-dialog{
+      position:relative;
+      width:min(720px, 92vw);
+      margin: 60px auto;
+      background:#fff;
+      border-radius:10px;
+      border:1px solid #e5e7eb;
+      overflow:hidden;
+      box-shadow:0 10px 30px rgba(0,0,0,.2);
+    }
+    .modal-header{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:14px 16px; border-bottom:1px solid #eee; font-weight:800;
+    }
+    .modal-close{
+      border:none; background:transparent; font-size:26px; line-height:1;
+      cursor:pointer; color:#6b7280;
+    }
+    .modal-body{ padding:16px; max-height: calc(100vh - 200px); overflow:auto; }
+    .modal-footer{
+      padding:12px 16px; border-top:1px solid #eee;
+      display:flex; justify-content:flex-end; gap:10px; background:#fff;
+    }
+    .form-row{ display:flex; flex-direction:column; gap:6px; margin-bottom:12px; }
+    .form-row label{ font-size:13px; font-weight:700; color:#374151; }
+    .form-row input, .form-row select{
+      padding:10px 12px; border:1px solid #d1d5db; border-radius:8px;
+      outline:none; background:#fff;
+    }
+    .hint{ font-size:12px; color:#6b7280; margin-top:-6px; }
+  </style>
+</head>
+
+<body>
+<div class="app">
+
+  <aside class="sidebar">
+    <h2>QUẢN LÝ NHÀ TRỌ</h2>
+    <div class="user">Xin chào, <span id="helloUser">admin</span></div>
+
+    <ul class="menu">
+      <li><a href="trangchu.html">Trang chủ</a></li>
+      <li><a href="quanlitaikhoan.html">Quản lí tài khoản</a></li>
+      <li class="active"><a href="quanliphong.html">Quản lí phòng</a></li>
+      <li><a href="quanlikhachthue.html">Khách thuê</a></li>
+      <li><a href="hopdong.html">Hợp đồng</a></li>
+      <li><a href="hoadon.html">Hóa đơn</a></li>
+      <li><a href="chiso.html">Chỉ số</a></li>
+      <li><a href="dichvu.html">Dịch vụ</a></li>
+      <li><a href="thanhtoan.html">Thanh toán</a></li>
+    </ul>
+
+    <div class="logout" id="logoutBtn">Đăng xuất</div>
+  </aside>
+
+  <main class="main">
+    <div class="page-header">
+      <h1>Quản lý phòng</h1>
+      <button class="btn-add" id="addRoomBtn" type="button">+ Thêm phòng mới</button>
+    </div>
+
+    <!-- FILTER -->
+    <div class="filter-bar">
+      <div class="filter-item">
+        <label>Phòng</label>
+        <input id="fRoomName" type="text" placeholder="nhập phòng">
+      </div>
+
+      <div class="filter-item">
+        <label>Loại phòng</label>
+        <select id="fRoomType">
+          <option value="">Tất cả</option>
+          <option value="CO_GAC">Có gác</option>
+          <option value="KHONG_GAC">Không gác</option>
+        </select>
+      </div>
+
+      <div class="filter-item">
+        <label>Trạng thái</label>
+        <select id="fRoomStatus">
+          <option value="">Tất cả</option>
+          <option value="DA_CHO_THUE">Đã cho thuê</option>
+          <option value="TRONG">Phòng trống</option>
+          <option value="DANG_SUA">Đang sửa</option>
+        </select>
+      </div>
+
+      <div class="filter-item filter-actions">
+        <label>&nbsp;</label>
+        <button class="btn-reset" id="resetRoomFilter">Đặt lại</button>
+      </div>
+    </div>
+
+    <!-- LIST -->
+    <div id="roomList"></div>
+  </main>
+</div>
+
+<script src="js/auth.js"></script>
+<script src="js/quanliphong.js"></script>
+
+<!-- MODAL THÊM/SỬA -->
+<div class="modal" id="roomModal" aria-hidden="true">
+  <div class="modal-backdrop" id="roomBackdrop"></div>
+
+  <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="roomTitle">
+    <div class="modal-header">
+      <div id="roomTitle">Thêm phòng mới</div>
+      <button class="modal-close" id="roomClose" aria-label="Đóng">×</button>
+    </div>
+
+    <div class="modal-body">
+      <form id="roomForm">
+        <input type="hidden" id="roomId">
+
+        <div class="form-row">
+          <label for="roomName">Tên phòng</label>
+          <input id="roomName" type="text" placeholder="nhập phòng" required>
+        </div>
+
+        <div class="form-row">
+          <label for="roomType">Loại phòng</label>
+          <select id="roomType" required>
+            <option value="CO_GAC">Có gác</option>
+            <option value="KHONG_GAC">Không gác</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <label for="roomPrice">Giá phòng</label>
+          <input id="roomPrice" type="number" min="0" step="1" placeholder="VD: 3300000" required>
+          <div class="hint">Nhập số (không cần dấu chấm). VD: 3300000</div>
+        </div>
+
+        <div class="form-row">
+          <label for="roomStatus">Trạng thái</label>
+          <select id="roomStatus" required>
+            <option value="TRONG">Phòng trống</option>
+            <option value="DA_CHO_THUE">Đã cho thuê</option>
+            <option value="DANG_SUA">Đang sửa</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <label for="roomCapacity">Sức chứa</label>
+          <input id="roomCapacity" type="number" min="1" step="1" placeholder="VD: 4" required>
+        </div>
+
+        <div class="form-row">
+          <label for="roomCurrent">Số người hiện tại</label>
+          <input id="roomCurrent" type="number" min="0" step="1" placeholder="VD: 0" required>
+        </div>
+      </form>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline" id="roomCancel">Đóng</button>
+      <button type="button" class="btn btn-primary" id="roomSave">Lưu</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin - Chỉ số</title>
+  <link rel="stylesheet" href="css/style.css">
+
+  <style>
+    /* ==== modal (nhỏ vừa + kéo được) ==== */
+    .modal{ position:fixed; inset:0; display:none; z-index:9999; }
+    .modal.show{ display:block; }
+    .modal-backdrop{ position:absolute; inset:0; background:rgba(0,0,0,.45); }
+
+    .modal-dialog{
+      position:relative;
+      width:min(720px, 92vw);
+      margin: 48px auto;
+      background:#fff;
+      border-radius:10px;
+      border:1px solid #e5e7eb;
+      overflow:hidden;
+      box-shadow:0 10px 30px rgba(0,0,0,.2);
+    }
+    .modal-header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:14px 16px;
+      border-bottom:1px solid #eee;
+      font-weight:800;
+    }
+    .modal-close{
+      border:none;
+      background:transparent;
+      font-size:28px;
+      line-height:1;
+      cursor:pointer;
+      color:#6b7280;
+    }
+    .modal-body{
+      padding:16px;
+      max-height: calc(100vh - 200px);
+      overflow:auto;
+    }
+    .modal-footer{
+      padding:12px 16px;
+      border-top:1px solid #eee;
+      display:flex;
+      justify-content:flex-end;
+      gap:10px;
+      background:#fff;
+    }
+
+    .form-grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+    }
+    .form-row{ display:flex; flex-direction:column; gap:6px; }
+    .form-row label{ font-size:13px; font-weight:700; color:#374151; }
+    .form-row input, .form-row select{
+      padding:10px 12px;
+      border:1px solid #d1d5db;
+      border-radius:8px;
+      outline:none;
+      background:#fff;
+    }
+    .form-row.full{ grid-column: 1 / -1; }
+    .hint{ font-size:12px; color:#6b7280; margin-top:-4px; }
+
+    /* ==== card chỉ số ==== */
+    .meter-card{
+      background:#fff;
+      border:1px solid #e5e7eb;
+      border-radius:10px;
+      padding:16px;
+      margin-bottom:14px;
+    }
+    .meter-head{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:10px;
+    }
+    .meter-head h3{ margin:0; font-size:26px; }
+    .badge{
+      padding:8px 14px;
+      border-radius:999px;
+      font-weight:800;
+      color:#fff;
+      font-size:14px;
+      white-space:nowrap;
+    }
+    .badge-electric{ background:#1d72d8; }
+    .badge-water{ background:#0ea5e9; }
+
+    .meter-body p{ margin:6px 0; font-size:16px; }
+    .meter-actions{ display:flex; gap:10px; margin-top:12px; }
+  </style>
+</head>
+
+<body>
+<div class="app">
+
+  <aside class="sidebar">
+    <h2>QUẢN LÝ NHÀ TRỌ</h2>
+    <div class="user">Xin chào, <span id="helloUser">admin</span></div>
+
+    <ul class="menu">
+      <li><a href="trangchu.html">Trang chủ</a></li>
+      <li><a href="quanlitaikhoan.html">Quản lí tài khoản</a></li>
+      <li><a href="quanliphong.html">Quản lí phòng</a></li>
+      <li><a href="quanlikhachthue.html">Khách thuê</a></li>
+      <li><a href="hopdong.html">Hợp đồng</a></li>
+      <li><a href="hoadon.html">Hóa đơn</a></li>
+      <li class="active"><a href="chiso.html">Chỉ số</a></li>
+      <li><a href="dichvu.html">Dịch vụ</a></li>
+      <li><a href="thanhtoan.html">Thanh toán</a></li>
+    </ul>
+
+    <div class="logout" id="logoutBtn">Đăng xuất</div>
+  </aside>
+
+  <main class="main">
+
+    <div class="page-header">
+      <div>
+        <h1>Quản lý chỉ số</h1>
+      </div>
+      <button class="btn-add" id="addMeterBtn" type="button">+ Thêm chỉ số</button>
+    </div>
+
+    <!-- FILTER BAR -->
+    <div class="filter-bar">
+      <div class="filter-item">
+        <label>Loại</label>
+        <select id="filterType">
+          <option value="">Tất cả</option>
+          <option value="DIEN">Điện</option>
+          <option value="NUOC">Nước</option>
+        </select>
+      </div>
+
+      <div class="filter-item">
+        <label>Phòng</label>
+        <select id="filterRoom">
+          <option value="">Tất cả</option>
+          <option value="Phòng 1">Phòng 1</option>
+          <option value="Phòng 2">Phòng 2</option>
+          <option value="Phòng 3">Phòng 3</option>
+        </select>
+      </div>
+
+      <div class="filter-item">
+        <label>Kỳ (YYYY-MM)</label>
+        <input id="filterPeriod" type="text" placeholder="VD: 2025-06" />
+      </div>
+
+      <div class="filter-item filter-actions">
+        <label>&nbsp;</label>
+        <button class="btn-reset" id="resetFilterBtn" type="button">Đặt lại</button>
+      </div>
+    </div>
+
+    <!-- LIST -->
+    <div id="meterList"></div>
+
+    <div id="emptyState" class="empty-state" style="display:none;">
+      Không có chỉ số phù hợp bộ lọc.
+    </div>
+
+  </main>
+</div>
+
+<!-- ===== MODAL THÊM/SỬA CHỈ SỐ ===== -->
+<div class="modal" id="meterModal" aria-hidden="true">
+  <div class="modal-backdrop" id="meterBackdrop"></div>
+
+  <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="meterTitle">
+    <div class="modal-header">
+      <div id="meterTitle">Thêm chỉ số</div>
+      <button class="modal-close" id="meterClose" aria-label="Đóng">×</button>
+    </div>
+
+    <div class="modal-body">
+      <form id="meterForm">
+        <input type="hidden" id="meterId" />
+
+        <div class="form-grid">
+          <div class="form-row">
+            <label for="meterType">Loại</label>
+            <select id="meterType" required>
+              <option value="DIEN">Điện</option>
+              <option value="NUOC">Nước</option>
+            </select>
+          </div>
+
+          <div class="form-row">
+            <label for="meterRoom">Phòng</label>
+            <select id="meterRoom" required>
+              <option value="Phòng 1">Phòng 1</option>
+              <option value="Phòng 2">Phòng 2</option>
+              <option value="Phòng 3">Phòng 3</option>
+            </select>
+          </div>
+
+          <div class="form-row">
+            <label for="meterPeriod">Kỳ (YYYY-MM)</label>
+            <input id="meterPeriod" type="text" placeholder="VD: 2024-01" required />
+          </div>
+
+          <div class="form-row">
+            <label for="meterDate">Thời điểm ghi</label>
+            <input id="meterDate" type="date" required />
+          </div>
+
+          <div class="form-row">
+            <label for="meterOld">Chỉ số cũ</label>
+            <input id="meterOld" type="number" min="0" step="1" required />
+          </div>
+
+          <div class="form-row">
+            <label for="meterNew">Chỉ số mới</label>
+            <input id="meterNew" type="number" min="0" step="1" required />
+            <div class="hint">Chỉ số mới phải ≥ chỉ số cũ</div>
+          </div>
+
+          <div class="form-row">
+            <label for="meterUnitPrice">Đơn giá (đ / kWh hoặc đ / m³)</label>
+            <input id="meterUnitPrice" type="number" min="0" step="1" required />
+          </div>
+
+          <div class="form-row full">
+            <div class="hint">
+              Hệ thống sẽ tự tính: <b>Lượng tiêu thụ = mới - cũ</b> và <b>Thành tiền = tiêu thụ * đơn giá</b>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline" id="meterCancel">Đóng</button>
+      <button type="button" class="btn btn-primary" id="meterSave">Lưu</button>
+    </div>
+  </div>
+</div>
+
+<!-- ✅ scripts đặt cuối file -->
+<script src="js/auth.js"></script>
+<script src="js/chiso.js"></script>
+
+</body>
+</html>

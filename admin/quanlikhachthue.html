@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin - Khách thuê</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+<div class="app">
+
+  <aside class="sidebar">
+    <h2>QUẢN LÝ NHÀ TRỌ</h2>
+    <div class="user">Xin chào, <span id="helloUser">admin</span></div>
+
+    <ul class="menu">
+      <li><a href="trangchu.html">Trang chủ</a></li>
+      <li><a href="quanlitaikhoan.html">Quản lí tài khoản</a></li>
+      <li><a href="quanliphong.html">Quản lí phòng</a></li>
+      <li class="active"><a href="quanlikhachthue.html">Khách thuê</a></li>
+      <li><a href="hopdong.html">Hợp đồng</a></li>
+      <li><a href="hoadon.html">Hóa đơn</a></li>
+      <li><a href="chiso.html">Chỉ số</a></li>
+      <li><a href="dichvu.html">Dịch vụ</a></li>
+      <li><a href="thanhtoan.html">Thanh toán</a></li>
+    </ul>
+
+    <div class="logout" id="logoutBtn">Đăng xuất</div>
+  </aside>
+
+  <main class="main">
+    <div class="page-header">
+      <h1>Quản lý khách thuê</h1>
+      <button class="btn-add" id="addTenantBtn" type="button">+ Thêm thành viên</button>
+    </div>
+
+    <!-- FILTER -->
+    <div class="filter-bar">
+      <div class="filter-item">
+        <label>Phòng</label>
+        <input id="fTenantKeyword" placeholder="nhập phòng">
+      </div>
+
+      <div class="filter-item">
+        <label>Vai trò</label>
+        <select id="fTenantRole">
+          <option value="">Tất cả</option>
+          <option value="DAI_DIEN">Đại diện</option>
+          <option value="O_CUNG">Ở cùng</option>
+        </select>
+      </div>
+
+      <div class="filter-item" style="min-width:140px">
+        <label>&nbsp;</label>
+        <button class="btn-reset" id="resetTenantFilter">Đặt lại</button>
+      </div>
+    </div>
+
+    <div id="tenantList"></div>
+  </main>
+</div>
+
+<script src="js/auth.js"></script>
+<script src="js/quanlikhachthue.js"></script>
+
+<!-- MODAL -->
+<div class="modal" id="tenantModal" aria-hidden="true">
+  <div class="modal-backdrop" id="tenantBackdrop"></div>
+
+  <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="tenantTitle">
+    <div class="modal-header">
+      <div id="tenantTitle">Thêm thành viên</div>
+      <button class="modal-close" id="tenantClose" aria-label="Đóng">×</button>
+    </div>
+
+    <div class="modal-body">
+      <form id="tenantForm">
+        <input type="hidden" id="tenantId">
+
+        <div class="form-row">
+          <label>Họ và tên</label>
+          <input id="tenantName" required placeholder="VD: Nguyễn Văn A">
+        </div>
+
+        <div class="form-row">
+          <label>SĐT</label>
+          <input id="tenantPhone" required placeholder="VD: 0987654321">
+        </div>
+
+        <div class="form-row">
+          <label>CCCD</label>
+          <input id="tenantCccd" required placeholder="VD: 012345678901">
+        </div>
+
+        <div class="form-row">
+          <label>Phòng</label>
+          <input id="tenantRoom" required placeholder="VD: Phòng 1">
+        </div>
+
+        <div class="form-row">
+          <label>Vai trò</label>
+          <select id="tenantRole" required>
+            <option value="DAI_DIEN">Đại diện</option>
+            <option value="O_CUNG">Ở cùng</option>
+          </select>
+        </div>
+      </form>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline" id="tenantCancel">Đóng</button>
+      <button type="button" class="btn btn-primary" id="tenantSave">Lưu</button>
+    </div>
+  </div>
+</div>
+<script src="js/auth.js"></script>
+<script src="js/quanlikhachthue.js"></script>
+
+</body>
+</html>

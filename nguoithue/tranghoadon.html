@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hóa đơn</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <h2>QUẢN LÝ NHÀ TRỌ</h2>
+    <div class="user">Xin chào, nguoithue1</div>
+
+    <ul class="menu">
+      <li><a href="trangcanhan.html">Trang cá nhân</a></li>
+      <li><a href="tranghopdong.html">Hợp đồng</a></li>
+      <li class="active"><a href="tranghoadon.html">Hóa đơn</a></li>
+      <li><a href="trangchisodien.html">Chỉ số</a></li>
+      <li><a href="trangthanhtoan.html">Thanh toán</a></li>
+    </ul>
+
+    <div class="logout" id="logoutBtn">Đăng xuất</div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div class="page-header">
+      <div>
+        <h1>Hóa đơn của tôi</h1>
+        
+      </div>
+    </div>
+
+    <!-- FILTER BAR: Kỳ + Trạng thái -->
+    <div class="filter-bar">
+      <div class="filter-item">
+        <label>Kỳ hóa đơn (YYYY-MM)</label>
+        <!-- có thể đổi type="month" nếu bạn muốn chọn bằng lịch -->
+        <input id="periodInput" type="text" placeholder="nhập kì hóa đơn">
+      </div>
+
+      <div class="filter-item">
+        <label>Trạng thái</label>
+        <select id="statusSelect">
+          <option value="">Tất cả</option>
+          <option value="UNPAID">Chưa thanh toán</option>
+          <option value="PAID">Đã thanh toán</option>
+        </select>
+      </div>
+
+      <div class="filter-item filter-actions">
+        <label>&nbsp;</label>
+        <button id="resetBtn" class="btn btn-outline" type="button">Đặt lại</button>
+      </div>
+    </div>
+
+    <!-- LIST (Card lớn bọc ngoài) -->
+    <div class="card">
+
+      <!-- ITEM 1: CHƯA THANH TOÁN -->
+      <div class="invoice-item" data-period="2025-06" data-status="UNPAID">
+        <div style="display:flex; justify-content:space-between; gap:12px; align-items:flex-start;">
+          <div style="font-weight:900; font-size:16px;">Hóa đơn #1</div>
+          <span class="status status-pending">Chưa thanh toán</span>
+        </div>
+
+        <div style="margin-top:10px; display:flex; flex-direction:column; gap:8px;">
+          <div class="pay-row"><span class="k">Phòng</span><span class="v">Phòng 1</span></div>
+          <div class="pay-row"><span class="k">Kỳ hóa đơn</span><span class="v">2025-06</span></div>
+          <div class="pay-row"><span class="k">Ngày lập</span><span class="v">06/06/2025</span></div>
+
+          <div class="pay-row"><span class="k">Tiền phòng</span><span class="v">3.000.000 đ</span></div>
+          <div class="pay-row"><span class="k">Tiền điện</span><span class="v">114.034 đ</span></div>
+          <div class="pay-row"><span class="k">Tiền nước</span><span class="v">378.000 đ</span></div>
+          <div class="pay-row"><span class="k">Tiền dịch vụ</span><span class="v">60.000 đ</span></div>
+          <div class="pay-row"><span class="k">Phát sinh</span><span class="v">0 đ</span></div>
+
+          <div style="margin-top:6px; padding-top:10px; border-top:1px dashed var(--border); display:flex; justify-content:space-between; font-weight:900;">
+            <span>Tổng tiền</span><span>3.552.034 đ</span>
+          </div>
+        </div>
+
+        <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="btn btn-outline" type="button" onclick="window.print()">In hóa đơn</button>
+          <button
+  class="btn btn-primary payBtn"
+  type="button"
+  data-amount="3552034"
+  data-desc="Thanh toán tiền của phòng phòng 1"
+  data-orderid="HD1_20250606110508"
+>
+  Thanh toán
+</button>
+        </div>
+      </div>
+
+      <hr style="border:none; border-top:1px solid var(--border); margin:14px 0;">
+
+      <!-- ITEM 2: ĐÃ THANH TOÁN -->
+      <div class="invoice-item" data-period="2025-05" data-status="PAID">
+        <div style="display:flex; justify-content:space-between; gap:12px; align-items:flex-start;">
+          <div style="font-weight:900; font-size:16px;">Hóa đơn #2</div>
+          <span class="status status-done">Đã thanh toán</span>
+        </div>
+
+        <div style="margin-top:10px; display:flex; flex-direction:column; gap:8px;">
+          <div class="pay-row"><span class="k">Phòng</span><span class="v">Phòng 1</span></div>
+          <div class="pay-row"><span class="k">Kỳ hóa đơn</span><span class="v">2025-05</span></div>
+          <div class="pay-row"><span class="k">Ngày lập</span><span class="v">06/05/2025</span></div>
+          <div class="pay-row"><span class="k">Tiền phòng</span><span class="v">3.000.000 đ</span></div>
+          <div class="pay-row"><span class="k">Tiền điện</span><span class="v">114.034 đ</span></div>
+          <div class="pay-row"><span class="k">Tiền nước</span><span class="v">378.000 đ</span></div>
+          <div class="pay-row"><span class="k">Tiền dịch vụ</span><span class="v">60.000 đ</span></div>
+          <div class="pay-row"><span class="k">Phát sinh</span><span class="v">0 đ</span></div>
+
+
+          <div style="margin-top:6px; padding-top:10px; border-top:1px dashed var(--border); display:flex; justify-content:space-between; font-weight:900;">
+            <span>Tổng tiền</span><span>3.420.000 đ</span>
+          </div>
+        </div>
+
+        <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="btn btn-outline" type="button" onclick="window.print()">In hóa đơn</button>
+          <span class="status status-done">Đã thanh toán</span>
+        </div>
+      </div>
+
+      <!-- EMPTY STATE -->
+      <div id="emptyState" class="empty-state" style="display:none; margin-top:14px;">
+        Không có hóa đơn phù hợp bộ lọc.
+      </div>
+
+    </div>
+  </main>
+
+</div>
+
+<script>
+  const periodInput  = document.getElementById('periodInput');
+  const statusSelect = document.getElementById('statusSelect');
+  const resetBtn     = document.getElementById('resetBtn');
+
+  const items = Array.from(document.querySelectorAll('.invoice-item'));
+  const emptyState = document.getElementById('emptyState');
+
+  function applyFilter(){
+    const period = periodInput.value.trim();   // vd: 2025-06
+    const status = statusSelect.value;         // UNPAID / PAID / ""
+
+    let shown = 0;
+
+    items.forEach(it => {
+      const p = it.getAttribute('data-period');
+      const s = it.getAttribute('data-status');
+
+      const okPeriod = !period || p === period;
+      const okStatus = !status || s === status;
+
+      const ok = okPeriod && okStatus;
+      it.style.display = ok ? '' : 'none';
+      if(ok) shown++;
+    });
+
+    emptyState.style.display = (shown === 0) ? '' : 'none';
+  }
+
+  periodInput.addEventListener('input', applyFilter);
+  statusSelect.addEventListener('change', applyFilter);
+
+  resetBtn.addEventListener('click', () => {
+    periodInput.value = '';
+    statusSelect.value = '';
+    applyFilter();
+  });
+
+  applyFilter();
+</script>
+<script src="js/auth.js"></script>
+
+<!-- ===== MODAL THANH TOÁN MOMO ===== -->
+<div class="modal" id="momoModal" aria-hidden="true">
+  <div class="modal-backdrop" id="momoBackdrop"></div>
+
+  <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="momoTitle">
+    <div class="modal-header">
+      <div id="momoTitle" class="modal-title">Thanh toán qua MoMo</div>
+      <button class="modal-close" id="momoClose" aria-label="Đóng">×</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="momo-logo">
+        <!-- bạn thay bằng logo thật nếu muốn -->
+        <div class="momo-logo-box">MoMo Logo</div>
+      </div>
+
+      <div class="momo-row">
+        <b>Số tiền:</b> <span id="momoAmount">0</span> đ
+      </div>
+      <div class="momo-row">
+        <b>Nội dung:</b> <span id="momoDesc">Thanh toán tiền phòng</span>
+      </div>
+      <div class="momo-row">
+        <b>Mã đơn hàng:</b> <span id="momoOrderId">HD_...</span>
+      </div>
+
+      <div class="momo-actions">
+        <button class="btn-momo" id="momoConfirm">Xác nhận thanh toán</button>
+      </div>
+
+      <div class="momo-note">
+        * Nhấn “Xác nhận thanh toán” để chuyển sang MoMo / trang tạo mã QR.
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ====== Helpers ======
+  function openModal() {
+    document.getElementById("momoModal").classList.add("show");
+  }
+  function closeModal() {
+    document.getElementById("momoModal").classList.remove("show");
+  }
+  function formatVND(n){
+    return (Number(n)||0).toLocaleString("vi-VN");
+  }
+
+  // ====== DOM ======
+  const modal = document.getElementById("momoModal");
+  const closeBtn = document.getElementById("momoClose");
+  const backdrop = document.getElementById("momoBackdrop");
+  const confirmBtn = document.getElementById("momoConfirm");
+
+  // ✅ Bắt tất cả nút thanh toán (có thể nhiều hóa đơn)
+  const payButtons = document.querySelectorAll(".payBtn");
+
+  // ====== Open modal when click "Thanh toán" ======
+  payButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const amount = btn.dataset.amount || "0";
+      const desc = btn.dataset.desc || "Thanh toán tiền phòng";
+      const orderId = btn.dataset.orderid || "HD_...";
+
+      document.getElementById("momoAmount").textContent = formatVND(amount);
+      document.getElementById("momoDesc").textContent = desc;
+      document.getElementById("momoOrderId").textContent = orderId;
+
+      // Lưu tạm dữ liệu vào modal để confirm dùng
+      modal.dataset.amount = amount;
+      modal.dataset.desc = desc;
+      modal.dataset.orderid = orderId;
+
+      openModal();
+    });
+  });
+
+  // Close modal
+  if (closeBtn) closeBtn.addEventListener("click", closeModal);
+  if (backdrop) backdrop.addEventListener("click", closeModal);
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && modal.classList.contains("show")) closeModal();
+  });
+
+  // ====== Confirm ======
+  if (confirmBtn) {
+    confirmBtn.addEventListener("click", () => {
+      // ✅ Option A (DEMO): chỉ hiện thông báo "đã gửi yêu cầu thanh toán"
+      alert("Đã chuyển sang MoMo (demo). Backend MoMo thật sẽ trả về payUrl/QR.");
+
+      // ✅ Option B (nếu bạn có link momo thật):
+      // const paymentUrl = localStorage.getItem("momo_payment_url"); // hoặc set cứng
+      // if (paymentUrl) window.open(paymentUrl, "_blank");
+
+      closeModal();
+    });
+  }
+</script>
+</body>
+</html>

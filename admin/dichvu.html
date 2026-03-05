@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin - Dịch vụ</title>
+  <link rel="stylesheet" href="css/style.css">
+
+  <style>
+    .modal{ position:fixed; inset:0; display:none; z-index:9999; }
+    .modal.show{ display:block; }
+    .modal-backdrop{ position:absolute; inset:0; background:rgba(0,0,0,.45); }
+
+    .modal-dialog{
+      position:relative;
+      width:min(640px, 92vw);
+      margin: 48px auto;
+      background:#fff;
+      border-radius:10px;
+      border:1px solid #e5e7eb;
+      overflow:hidden;
+      box-shadow:0 10px 30px rgba(0,0,0,.2);
+    }
+
+    .modal-header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:14px 16px;
+      border-bottom:1px solid #eee;
+      font-weight:800;
+    }
+
+    .modal-close{
+      border:none;
+      background:transparent;
+      font-size:28px;
+      line-height:1;
+      cursor:pointer;
+      color:#6b7280;
+    }
+
+    .modal-body{
+      padding:16px;
+      max-height: calc(100vh - 200px);
+      overflow:auto;
+    }
+
+    .modal-footer{
+      padding:12px 16px;
+      border-top:1px solid #eee;
+      display:flex;
+      justify-content:flex-end;
+      gap:10px;
+      background:#fff;
+    }
+
+    .form-row{ display:flex; flex-direction:column; gap:6px; margin-bottom:12px; }
+    .form-row label{ font-size:13px; font-weight:700; color:#374151; }
+    .form-row input{
+      padding:10px 12px;
+      border:1px solid #d1d5db;
+      border-radius:8px;
+      outline:none;
+      background:#fff;
+    }
+    .hint{ font-size:12px; color:#6b7280; margin-top:-6px; }
+
+    /* card dịch vụ */
+    .service-card{
+      background:#fff;
+      border:1px solid #e5e7eb;
+      border-radius:10px;
+      padding:16px;
+      margin-bottom:14px;
+    }
+    .service-card h3{ margin:0 0 10px; font-size:22px; }
+    .service-card p{ margin:0 0 12px; font-size:16px; }
+    .service-actions{ display:flex; gap:10px; }
+  </style>
+</head>
+
+<body>
+<div class="app">
+
+  <aside class="sidebar">
+    <h2>QUẢN LÝ NHÀ TRỌ</h2>
+    <div class="user">Xin chào, <span id="helloUser">ADMIN</span></div>
+
+    <ul class="menu">
+      <li><a href="trangchu.html">Trang chủ</a></li>
+      <li><a href="quanlitaikhoan.html">Quản lí tài khoản</a></li>
+      <li><a href="quanliphong.html">Quản lí phòng</a></li>
+      <li><a href="quanlikhachthue.html">Khách thuê</a></li>
+      <li><a href="hopdong.html">Hợp đồng</a></li>
+      <li><a href="hoadon.html">Hóa đơn</a></li>
+      <li><a href="chiso.html">Chỉ số</a></li>
+      <li class="active"><a href="dichvu.html">Dịch vụ</a></li>
+      <li><a href="thanhtoan.html">Thanh toán</a></li>
+    </ul>
+
+    <div class="logout" id="logoutBtn">Đăng xuất</div>
+  </aside>
+
+  <main class="main">
+    <div class="page-header">
+      <h1>Quản lý dịch vụ</h1>
+      <button class="btn-add" id="addServiceBtn" type="button">+ Thêm dịch vụ mới</button>
+    </div>
+
+    <div id="serviceList"></div>
+  </main>
+</div>
+
+<!-- ===== MODAL THÊM/SỬA DỊCH VỤ ===== -->
+<div class="modal" id="serviceModal" aria-hidden="true">
+  <div class="modal-backdrop" id="serviceBackdrop"></div>
+
+  <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="serviceTitle">
+    <div class="modal-header">
+      <div id="serviceTitle">Thêm dịch vụ mới</div>
+      <button class="modal-close" id="serviceClose" aria-label="Đóng">×</button>
+    </div>
+
+    <div class="modal-body">
+      <form id="serviceForm">
+        <input type="hidden" id="serviceId" />
+
+        <div class="form-row">
+          <label for="serviceName">Tên dịch vụ</label>
+          <input id="serviceName" type="text" placeholder="VD: Wifi" required />
+        </div>
+
+        <div class="form-row">
+          <label for="servicePrice">Giá</label>
+          <input id="servicePrice" type="number" min="0" step="1" placeholder="VD: 50000" required />
+          <div class="hint">Nhập số (không cần dấu chấm). Ví dụ: 50000</div>
+        </div>
+
+        <div class="form-row">
+          <label for="serviceUnit">Đơn vị (tuỳ chọn)</label>
+          <input id="serviceUnit" type="text" placeholder="VD: / tháng, / kWh, / m³..." />
+        </div>
+      </form>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline" id="serviceCancel">Đóng</button>
+      <button type="button" class="btn btn-primary" id="serviceSave">Lưu</button>
+    </div>
+  </div>
+</div>
+
+<!-- ✅ ĐẶT SCRIPT Ở CUỐI FILE (SAU MODAL) -->
+<script src="js/auth.js"></script>
+<script src="js/dichvu.js"></script>
+
+</body>
+</html>

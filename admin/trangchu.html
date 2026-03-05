@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin - Trang chủ</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <h2>QUẢN LÝ NHÀ TRỌ</h2>
+    <div class="user">Xin chào, <span id="helloUser">ADMIN</span></div>
+
+    <ul class="menu">
+      <li class="active"><a href="trangchu.html">Trang chủ</a></li>
+      <li><a href="quanlitaikhoan.html">Quản lí tài khoản</a></li>
+      <li><a href="quanliphong.html">Quản lí phòng</a></li>
+      <li><a href="quanlikhachthue.html">Khách thuê</a></li>
+      <li><a href="hopdong.html">Hợp đồng</a></li>
+      <li><a href="hoadon.html">Hóa đơn</a></li>
+      <li><a href="chiso.html">Chỉ số</a></li>
+      <li><a href="dichvu.html">Dịch vụ</a></li>
+      <li><a href="thanhtoan.html">Thanh toán</a></li>
+    </ul>
+
+    <div class="logout" id="logoutBtn">Đăng xuất</div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div class="page-header">
+      <h1>Trang chủ</h1>
+    </div>
+
+    <!-- TOP -->
+    <div class="dashboard-grid">
+      <!-- TRẠNG THÁI PHÒNG -->
+      <div class="box">
+        <h3>Trạng thái phòng</h3>
+
+        <div style="margin:10px 0 12px;">
+          <span class="tag blue">Đang thuê</span>
+          <span class="tag red">Phòng trống</span>
+        </div>
+
+        <div class="pie-wrapper">
+          <div class="pie">100%</div>
+        </div>
+      </div>
+
+      <!-- DOANH THU -->
+      <div class="box">
+        <h3>Doanh thu (VNĐ)</h3>
+
+        <div style="
+          border: 2px dashed #ddd;
+          height: 220px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #888;
+          font-size: 14px;
+          border-radius: 8px;
+        ">
+          (Biểu đồ doanh thu)
+        </div>
+      </div>
+    </div>
+
+    <!-- BOTTOM -->
+    <div class="dashboard-bottom">
+      <!-- PHÒNG TRỐNG -->
+      <div class="box">
+        <h3>Danh sách phòng trống</h3>
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Nhà</th>
+              <th>Phòng</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Tầng 1</td>
+              <td>1</td>
+            </tr>
+            <tr>
+              <td>Tầng 1</td>
+              <td>2</td>
+            </tr>
+            <tr>
+              <td>Tầng 1</td>
+              <td>3</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- KHÁCH NỢ -->
+      <div class="box">
+        <h3>Danh sách khách nợ tiền phòng</h3>
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Nhà</th>
+              <th>Phòng</th>
+              <th>Khách</th>
+              <th>Tháng</th>
+              <th>Số tiền</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="5" style="color:#777; text-align:center;">
+                Không tìm thấy dòng nào phù hợp
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+</div>
+
+<!-- JS auth chung cho admin -->
+<script src="js/auth.js"></script>
+</body>
+</html>

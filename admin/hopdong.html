@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin - Hợp đồng</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+<div class="app">
+
+  <aside class="sidebar">
+    <h2>QUẢN LÝ NHÀ TRỌ</h2>
+    <div class="user">Xin chào, <span id="helloUser">admin</span></div>
+
+    <ul class="menu">
+      <li><a href="trangchu.html">Trang chủ</a></li>
+      <li><a href="quanlitaikhoan.html">Quản lí tài khoản</a></li>
+      <li><a href="quanliphong.html">Quản lí phòng</a></li>
+      <li><a href="quanlikhachthue.html">Khách thuê</a></li>
+      <li class="active"><a href="hopdong.html">Hợp đồng</a></li>
+      <li><a href="hoadon.html">Hóa đơn</a></li>
+      <li><a href="chiso.html">Chỉ số</a></li>
+      <li><a href="dichvu.html">Dịch vụ</a></li>
+      <li><a href="thanhtoan.html">Thanh toán</a></li>
+    </ul>
+
+    <div class="logout" id="logoutBtn">Đăng xuất</div>
+  </aside>
+
+  <main class="main">
+    <div class="page-header">
+      <h1>Quản lý hợp đồng</h1>
+      <button class="btn-add" id="addContractBtn" type="button">+ Tạo hợp đồng</button>
+    </div>
+
+    <!-- FILTER -->
+    <div class="filter-bar">
+      <div class="filter-item">
+        <label>Phòng</label>
+        <input id="fContractRoom" placeholder="VD: Phòng 1">
+      </div>
+
+      <div class="filter-item">
+        <label>Trạng thái</label>
+        <select id="fContractStatus">
+          <option value="">Tất cả</option>
+          <option value="CON_HIEU_LUC">Còn hiệu lực</option>
+          <option value="HET_HIEU_LUC">Hết hiệu lực</option>
+        </select>
+      </div>
+
+      <div class="filter-item" style="min-width:140px">
+        <label>&nbsp;</label>
+        <button class="btn-reset" id="resetContractFilter">Đặt lại</button>
+      </div>
+    </div>
+
+    <div id="contractList"></div>
+  </main>
+</div>
+
+<script src="js/auth.js"></script>
+<script src="js/hopdong.js"></script>
+
+<!-- MODAL -->
+<div class="modal" id="contractModal" aria-hidden="true">
+  <div class="modal-backdrop" id="contractBackdrop"></div>
+
+  <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="contractTitle">
+    <div class="modal-header">
+      <div id="contractTitle">Tạo hợp đồng</div>
+      <button class="modal-close" id="contractClose" aria-label="Đóng">×</button>
+    </div>
+
+    <div class="modal-body">
+      <form id="contractForm">
+        <input type="hidden" id="contractId">
+
+        <div class="form-row">
+          <label>Mã hợp đồng</label>
+          <input id="contractCode" required placeholder="VD: HD001">
+        </div>
+
+        <div class="form-row">
+          <label>Phòng</label>
+          <input id="contractRoom" required placeholder="VD: Phòng 1">
+        </div>
+
+        <div class="form-row">
+          <label>Người đại diện</label>
+          <input id="contractRep" required placeholder="VD: Nguyễn Văn A">
+        </div>
+
+        <div class="form-row">
+          <label>Ngày bắt đầu</label>
+          <input id="contractStart" type="date" required>
+        </div>
+
+        <div class="form-row">
+          <label>Ngày kết thúc</label>
+          <input id="contractEnd" type="date" required>
+        </div>
+
+        <div class="form-row">
+          <label>Tiền cọc (đ)</label>
+          <input id="contractDeposit" type="number" min="0" step="1" required placeholder="VD: 3000000">
+        </div>
+
+        <div class="form-row">
+          <label>Trạng thái</label>
+          <select id="contractStatus" required>
+            <option value="CON_HIEU_LUC">Còn hiệu lực</option>
+            <option value="HET_HIEU_LUC">Hết hiệu lực</option>
+          </select>
+        </div>
+      </form>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline" id="contractCancel">Đóng</button>
+      <button type="button" class="btn btn-primary" id="contractSave">Lưu</button>
+    </div>
+  </div>
+</div>
+<script src="js/auth.js"></script>
+<script src="js/hopdong.js"></script>
+
+</body>
+</html>

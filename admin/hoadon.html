@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin - Hóa đơn</title>
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- Modal + layout cuộn riêng list -->
+  <style>
+    /* ===== Layout fix: sidebar đứng yên, chỉ list cuộn ===== */
+    .app{ height:100vh; overflow:hidden; }
+    .sidebar{ height:100vh; overflow:hidden; display:flex; flex-direction:column; }
+    .main{
+      height:100vh; overflow:hidden;
+      display:flex; flex-direction:column; min-height:0;
+      padding: 25px;
+    }
+    .list-scroll{ flex:1; overflow:auto; min-height:0; padding-right:6px; }
+
+    /* ===== Filter bar (nếu bạn đã có thì vẫn ok) ===== */
+    .filter-bar{
+      display:flex; gap:12px; flex-wrap:wrap;
+      background:#fff; border:1px solid #e5e7eb;
+      padding:12px; border-radius:10px; margin:12px 0 16px;
+    }
+    .filter-item{ display:flex; flex-direction:column; gap:6px; min-width:180px; }
+    .filter-item label{ font-size:12px; font-weight:700; color:#6b7280; }
+    .filter-item select,.filter-item input{
+      padding:10px 12px; border:1px solid #e5e7eb; border-radius:10px; outline:none; background:#fff;
+    }
+    .filter-actions{ min-width:120px; justify-content:flex-end; }
+    .btn-reset{
+      padding:10px 12px; border-radius:10px; border:1px solid #e5e7eb;
+      background:#f3f4f6; font-weight:700; cursor:pointer;
+    }
+
+    /* ===== Badge trạng thái ===== */
+    .badge{
+      display:inline-block;
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:13px;
+      font-weight:800;
+    }
+    .badge-paid{ background:#d4edda; color:#155724; }
+    .badge-wait{ background:#fdecea; color:#c0392b; }
+
+    /* ===== Modal ===== */
+    .modal{ position:fixed; inset:0; display:none; z-index:9999; }
+    .modal.show{ display:block; }
+    .modal-backdrop{ position:absolute; inset:0; background:rgba(0,0,0,.45); }
+
+    .modal-dialog{
+      position:relative;
+      width:min(760px, 92vw);
+      margin: 60px auto;
+      background:#fff;
+      border-radius:10px;
+      border:1px solid #e5e7eb;
+      overflow:hidden;
+      box-shadow:0 10px 30px rgba(0,0,0,.2);
+    }
+    .modal-header{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:14px 16px; border-bottom:1px solid #eee; font-weight:900;
+    }
+    .modal-title{ font-size:18px; }
+    .modal-close{
+      border:none; background:transparent; font-size:26px; line-height:1;
+      cursor:pointer; color:#6b7280;
+    }
+    .modal-body{
+      padding:16px;
+      max-height: calc(100vh - 220px);
+      overflow:auto;
+    }
+    .modal-footer{
+      padding:12px 16px; border-top:1px solid #eee;
+      display:flex; justify-content:flex-end; gap:10px; background:#fff;
+    }
+
+    .form-grid{ display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
+    @media (max-width: 720px){ .form-grid{ grid-template-columns: 1fr; } }
+
+    .form-row{ display:flex; flex-direction:column; gap:6px; }
+    .form-row label{ font-size:13px; font-weight:800; color:#374151; }
+    .form-row input, .form-row select{
+      padding:10px 12px; border:1px solid #d1d5db; border-radius:8px; outline:none; background:#fff;
+    }
+    .hint{ font-size:12px; color:#6b7280; }
+
+    /* Nút (nếu style.css bạn đã có btn btn-primary thì vẫn dùng được) */
+    .btn{ padding:10px 14px; border-radius:10px; cursor:pointer; border:1px solid transparent; font-weight:800; }
+    .btn-outline{ background:#fff; border-color:#d1d5db; }
+    .btn-primary{ background:#1976d2; color:#fff; }
+  </style>
+</head>
+
+<body>
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div>
+      <h2>QUẢN LÝ NHÀ TRỌ</h2>
+      <div class="user">Xin chào, <span id="helloUser">ADMIN</span></div>
+
+      <ul class="menu">
+        <li><a href="trangchu.html">Trang chủ</a></li>
+        <li><a href="quanlitaikhoan.html">Quản lí tài khoản</a></li>
+        <li><a href="quanliphong.html">Quản lí phòng</a></li>
+        <li><a href="quanlikhachthue.html">Khách thuê</a></li>
+        <li><a href="hopdong.html">Hợp đồng</a></li>
+        <li class="active"><a href="hoadon.html">Hóa đơn</a></li>
+        <li><a href="chiso.html">Chỉ số</a></li>
+        <li><a href="dichvu.html">Dịch vụ</a></li>
+        <li><a href="thanhtoan.html">Thanh toán</a></li>
+      </ul>
+    </div>
+
+    <div class="logout" id="logoutBtn">Đăng xuất</div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <div class="page-header">
+      <h1>Hóa đơn</h1>
+      <button class="btn btn-primary" id="btnCreateInvoice" type="button">+ Tạo hóa đơn</button>
+    </div>
+
+    <!-- FILTER -->
+    <div class="filter-bar">
+      <div class="filter-item">
+        <label>Trạng thái</label>
+        <select id="fStatus">
+          <option value="">Tất cả</option>
+          <option value="UNPAID">Chưa thanh toán</option>
+          <option value="PAID">Đã thanh toán</option>
+        </select>
+      </div>
+
+      <div class="filter-item">
+        <label>Phòng</label>
+        <select id="fRoom">
+          <option value="">Tất cả</option>
+          <option value="Phòng 1">Phòng 1</option>
+          <option value="Phòng 2">Phòng 2</option>
+          <option value="Phòng 3">Phòng 3</option>
+        </select>
+      </div>
+
+      <div class="filter-item">
+        <label>Kỳ (YYYY-MM)</label>
+        <input id="fPeriod" type="text" placeholder="VD: 2025-06">
+      </div>
+
+      <div class="filter-item filter-actions">
+        <label>&nbsp;</label>
+        <button class="btn-reset" id="btnResetFilter" type="button">Đặt lại</button>
+      </div>
+    </div>
+
+    <!-- LIST scroll -->
+    <div class="list-scroll">
+      <div id="invoiceList"></div>
+      <div id="emptyState" style="display:none; color:#6b7280; padding:10px 4px;">
+        Không có hóa đơn phù hợp bộ lọc.
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script src="js/auth.js"></script>
+<script src="js/hoadon.js"></script>
+
+<!-- ===== MODAL: TẠO / SỬA HÓA ĐƠN ===== -->
+<div class="modal" id="invoiceModal" aria-hidden="true">
+  <div class="modal-backdrop" id="invoiceBackdrop"></div>
+
+  <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="invoiceTitle">
+    <div class="modal-header">
+      <div class="modal-title" id="invoiceTitle">Tạo hóa đơn</div>
+      <button class="modal-close" id="invoiceClose" aria-label="Đóng">×</button>
+    </div>
+
+    <div class="modal-body">
+      <form id="invoiceForm">
+        <input type="hidden" id="invId">
+
+        <div class="form-grid">
+          <div class="form-row">
+            <label>Phòng</label>
+            <select id="invRoom" required>
+              <option value="">-- Chọn phòng --</option>
+              <option>Phòng 1</option>
+              <option>Phòng 2</option>
+              <option>Phòng 3</option>
+            </select>
+          </div>
+
+          <div class="form-row">
+            <label>Kỳ hóa đơn (YYYY-MM)</label>
+            <input id="invPeriod" type="text" placeholder="VD: 2025-06" required>
+          </div>
+
+          <div class="form-row">
+            <label>Ngày lập</label>
+            <input id="invDate" type="date" required>
+          </div>
+
+          <div class="form-row">
+            <label>Trạng thái</label>
+            <select id="invStatus" required>
+              <option value="UNPAID">Chưa thanh toán</option>
+              <option value="PAID">Đã thanh toán</option>
+            </select>
+          </div>
+        </div>
+
+        <hr style="margin:14px 0; border:none; border-top:1px solid #eee;">
+
+        <div class="form-grid">
+          <div class="form-row">
+            <label>Tiền phòng (đ)</label>
+            <input id="invRent" type="number" min="0" step="1" placeholder="VD: 3000000" required>
+            <div class="hint">Nhập số, không dấu chấm.</div>
+          </div>
+
+          <div class="form-row">
+            <label>Tiền điện (đ)</label>
+            <input id="invElec" type="number" min="0" step="1" placeholder="VD: 105000" required>
+          </div>
+
+          <div class="form-row">
+            <label>Tiền nước (đ)</label>
+            <input id="invWater" type="number" min="0" step="1" placeholder="VD: 120000" required>
+          </div>
+
+          <div class="form-row">
+            <label>Tiền dịch vụ (đ)</label>
+            <input id="invService" type="number" min="0" step="1" placeholder="VD: 50000" required>
+          </div>
+
+          <div class="form-row">
+            <label>Phát sinh (đ)</label>
+            <input id="invExtra" type="number" min="0" step="1" placeholder="VD: 0" value="0">
+          </div>
+
+          <div class="form-row">
+            <label>Tổng tiền (tự tính)</label>
+            <input id="invTotal" type="text" disabled value="0 đ">
+            <div class="hint">Tổng = phòng + điện + nước + dịch vụ + phát sinh</div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-outline" type="button" id="invoiceCancel">Đóng</button>
+      <button class="btn btn-primary" type="button" id="invoiceSave">Lưu</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL: XEM CHI TIẾT ===== -->
+<div class="modal" id="detailModal" aria-hidden="true">
+  <div class="modal-backdrop" id="detailBackdrop"></div>
+
+  <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+    <div class="modal-header">
+      <div class="modal-title" id="detailTitle">Chi tiết hóa đơn</div>
+      <button class="modal-close" id="detailClose" aria-label="Đóng">×</button>
+    </div>
+
+    <div class="modal-body" id="detailBody">
+      <!-- JS render -->
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-outline" type="button" id="detailOk">Đóng</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin - Thanh toán</title>
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- Nếu style.css đã có modal thì có thể bỏ block này.
+       Block này giúp modal không quá to + kéo (scroll) được phần nội dung -->
+  <style>
+    .modal{ position:fixed; inset:0; display:none; z-index:9999; }
+    .modal.show{ display:block; }
+    .modal-backdrop{ position:absolute; inset:0; background:rgba(0,0,0,.45); }
+
+    .modal-dialog{
+      position:relative;
+      width:min(720px, 92vw);
+      margin: 60px auto;
+      background:#fff;
+      border-radius:12px;
+      border:1px solid #e5e7eb;
+      overflow:hidden;
+      box-shadow:0 10px 30px rgba(0,0,0,.2);
+    }
+    .modal-header{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:14px 16px;
+      border-bottom:1px solid #eee;
+      font-weight:800;
+    }
+    .modal-close{
+      border:none; background:transparent;
+      font-size:26px; line-height:1;
+      cursor:pointer; color:#6b7280;
+    }
+    .modal-body{
+      padding:16px;
+      max-height: calc(100vh - 220px);
+      overflow:auto;
+    }
+    .modal-footer{
+      padding:12px 16px;
+      border-top:1px solid #eee;
+      display:flex; justify-content:flex-end; gap:10px;
+      background:#fff;
+    }
+  </style>
+</head>
+
+<body>
+<div class="app">
+
+  <aside class="sidebar">
+    <h2>QUẢN LÝ NHÀ TRỌ</h2>
+    <div class="user">Xin chào, <span id="helloUser">admin</span></div>
+
+    <ul class="menu">
+      <li><a href="trangchu.html">Trang chủ</a></li>
+      <li><a href="quanlitaikhoan.html">Quản lí tài khoản</a></li>
+      <li><a href="quanliphong.html">Quản lí phòng</a></li>
+      <li><a href="quanlikhachthue.html">Khách thuê</a></li>
+      <li><a href="hopdong.html">Hợp đồng</a></li>
+      <li><a href="hoadon.html">Hóa đơn</a></li>
+      <li><a href="chiso.html">Chỉ số</a></li>
+      <li><a href="dichvu.html">Dịch vụ</a></li>
+      <li class="active"><a href="thanhtoan.html">Thanh toán</a></li>
+    </ul>
+
+    <div class="logout" id="logoutBtn">Đăng xuất</div>
+  </aside>
+
+  <main class="main">
+    <div class="page-header">
+      <h1>Quản lý thanh toán</h1>
+    </div>
+
+    <!-- FILTER -->
+    <div class="filter-bar">
+      <div class="filter-item">
+        <label>Phòng</label>
+        <select id="fPayRoom">
+          <option value="">Tất cả</option>
+        </select>
+      </div>
+
+      <div class="filter-item">
+        <label>Trạng thái</label>
+        <select id="fPayStatus">
+          <option value="">Tất cả</option>
+          <option value="CHUA_TT">Chưa thanh toán</option>
+          <option value="DA_TT">Đã thanh toán</option>
+        </select>
+      </div>
+
+      <div class="filter-item" style="min-width:140px">
+        <label>&nbsp;</label>
+        <button class="btn-reset" id="resetPayFilter" type="button">Đặt lại</button>
+      </div>
+    </div>
+
+    <!-- LIST -->
+    <div id="payList"></div>
+  </main>
+</div>
+
+<script src="js/auth.js"></script>
+<script src="js/thanhtoan.js"></script>
+
+<!-- MODAL CHI TIẾT -->
+<div class="modal" id="payModal" aria-hidden="true">
+  <div class="modal-backdrop" id="payBackdrop"></div>
+
+  <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="payTitle">
+    <div class="modal-header">
+      <div id="payTitle">Chi tiết thanh toán</div>
+      <button class="modal-close" id="payClose" aria-label="Đóng" type="button">×</button>
+    </div>
+
+    <!-- JS sẽ đổ HTML chi tiết vào đây -->
+    <div class="modal-body" id="payDetail"></div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline" id="payCancel">Đóng</button>
+      <button type="button" class="btn btn-outline" id="payGoInvoice">Xem hóa đơn</button>
+      <button type="button" class="btn btn-primary" id="payMarkPaid">Đánh dấu đã thanh toán</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
