@@ -1,0 +1,52 @@
+/* CSS Reset and Normalization */
+
+/* Normalize some default styles for common HTML elements */
+
+html, body, div, span, applet, object, iframe,
+ h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+ a, abbr, article, aside, b, canvas, caption, cite,
+ code, del, details, dfn, em, img, input, hgroup,
+ hr, li, menu, ol, table, tbody, td, tfoot, th,
+ thead, tr, u, ul, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+/* Reset list styles */
+ul, ol {
+    list-style: none;
+}
+
+/* Set default line height and font family for body */
+body {
+    line-height: 1;
+    font-family: Arial, sans-serif;
+}
+
+/* Responsive images */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Add a box-sizing model */
+*, *:before, *:after {
+    box-sizing: border-box;
+}
+
+/* Add a bit of space to textareas */
+textarea {
+    resize: vertical;
+}
+
+/* Allow proper tap targets for touch devices */
+a {
+    touch-action: manipulation;
+}
+
+/* More utilities to support user agents */
+/* Additional Reset Rules can be added here */
